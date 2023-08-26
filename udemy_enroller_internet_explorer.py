@@ -39,10 +39,7 @@ def getUdemyLink(url):
 
     soup = BeautifulSoup(response.content, "html.parser")
 
-    linkForUdemy = soup.find("span",
-                             class_="rh_button_wrapper").find("a").get("href")
-
-    return linkForUdemy
+    return soup.find("span", class_="rh_button_wrapper").find("a").get("href")
 
 
 def gatherUdemyCourseLinks(courses):
@@ -70,7 +67,7 @@ def getTutorialBarLinks(url):
     courses = []
 
     x = 0
-    for i in range(12):
+    for _ in range(12):
         courses.append(links[x].get("href"))
         x = x + 3
 
@@ -91,7 +88,7 @@ def udemyLogin(email_text, password_text):
 
 def redeemUdemyCourse(url):
     driver.get(url)
-    print("Trying to Enroll for: " + driver.title)
+    print(f"Trying to Enroll for: {driver.title}")
 
     # Enroll Now 1
     element_present = EC.presence_of_element_located(
@@ -136,8 +133,7 @@ def main_function():
     while True:
 
         print("Please Wait: Getting the course list from tutorialbar.com...")
-        print("Page: " + str(page) + ", Loop run count: " +
-              str(loop_run_count))
+        print(f"Page: {str(page)}, Loop run count: {str(loop_run_count)}")
 
         url = "https://www.tutorialbar.com/all-courses/" + "page/" + str(
             page) + "/"
@@ -146,7 +142,7 @@ def main_function():
         udemyLinks = gatherUdemyCourseLinks(courses)
 
         for counter, course in enumerate(udemyLinks):
-            print("Received Link {} : {}".format((counter + 1), course))
+            print(f"Received Link {counter + 1} : {course}")
 
         if loop_run_count == 0:
             udemyLogin(email, password)
